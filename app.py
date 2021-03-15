@@ -3,7 +3,7 @@ from flask import Flask, render_template    # Importing Flask
 
 def get_db_connection():                    # Function that connects us to DB and returns it.
     conn = sqlite3.connect('database.db')   # 1. Open connection to database.db via the `conn` object
-    conn.row_factory = sqlite3.row_factory  # 2. Set row_factory to access DB columns based on names
+    conn.row_factory = sqlite3.Row          # 2. Set row_factory to access DB columns based on names
     return conn                             # 3. Return connection object which is used for DB connection
 
 app = Flask(__name__)
