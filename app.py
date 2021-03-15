@@ -31,4 +31,4 @@ def index():
 @app.route('/<int:post_id>')                # Add rule of variable: an integer to route which contains a post ID.
 def post(post_id):
     post = get_post(post_id)
-    return render_template('post.html', posts=posts) # posts is an arg that contains results from DB (from `posts` variable)
+    return render_template('post.html', post=post) # `post` is an arg that contains results from DB (from `post` variable)
