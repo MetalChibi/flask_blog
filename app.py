@@ -26,3 +26,9 @@ def index():
                                             # fetchall() fetches all lines of query execution result.
     conn.close()                            # Close DB connection via close() method.
     return render_template('index.html', posts=posts) # posts is an arg that contains results from DB (from `posts` variable)
+
+
+@app.route('/<int:post_id>')                # Add rule of variable: an integer to route which contains a post ID.
+def post(post_id):
+    post = get_post(post_id)
+    return render_template('post.html', posts=posts) # posts is an arg that contains results from DB (from `posts` variable)
