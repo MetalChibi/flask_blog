@@ -1,5 +1,9 @@
 import sqlite3                              # Importing sqlite3 module.
-from flask import Flask, render_template    # Importing Flask
+from flask import Flask, render_template, request, url_for, flash, redirect
+# request: access to the request data which is passed via html form
+# url_for: generate URL addresses
+# flash: browser dialog messages; requires secret passkey 
+# redirect: redirect client to a different location
 from werkzeug.exceptions import abort       # Import abort() from Werkzeug lib
 
 def get_db_connection():                    # Function that connects us to DB and returns it.
@@ -18,6 +22,7 @@ def get_post(post_id):                      # Argument post_id: determintes whic
     return post                             # Else: return the post as is.
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'alohomora'
 
 @app.route('/')
 def index():
@@ -32,3 +37,23 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     return render_template('post.html', post=post) # `post` is an arg that contains results from DB (from `post` variable)
+
+@app.route('/create', methods=('GET', 'POST'))
+# The create route accepts GET & POST requests; GET - by default.
+# POST: pass a tuple (json??) with acceptable request types to methods
+def create():
+    if request.method == "POST":
+# The following code will only be executed if POST method is used.
+        title = request.form['title']
+        content = request.form['content']
+# We got form data; checking if Title is filled
+        if not title:
+            flash('Title is required!')
+        else:
+            conn = get_db_connection()
+            conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)', (title, content))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
+
+    return render_template('create.html')

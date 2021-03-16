@@ -1,0 +1,7 @@
+(venv) D:\#dev\flask_blog>set FLASK_APP=(APP NAME)
+
+(venv) D:\#dev\flask_blog>set FLASK_ENV=development
+
+(venv) D:\#dev\flask_blog>flask run
+
+flask run -p 5001 // other port
