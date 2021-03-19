@@ -1,5 +1,5 @@
 import sqlite3                              # Importing sqlite3 module.
-from flask import Flask, render_template    # Importing Flask
+from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort       # Import abort() from Werkzeug lib
 
 def get_db_connection():                    # Function that connects us to DB and returns it.
@@ -18,6 +18,7 @@ def get_post(post_id):                      # Argument post_id: determintes whic
     return post                             # Else: return the post as is.
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'alohomora'
 
 @app.route('/')
 def index():
@@ -32,3 +33,9 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     return render_template('post.html', post=post) # `post` is an arg that contains results from DB (from `post` variable)
+
+@app.route('/create', methods=('GET', 'POST'))
+# GET: Accepted by default.
+# For non-default methods: pass a tuple with GET & POST to `methods` of the @app.route() decorator.
+def create():
+    return render_template('create.html')
