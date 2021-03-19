@@ -55,3 +55,28 @@ def create():
         conn.close()
         return redirect(url_for('index')) # Return to index.
     return render_template('create.html')
+
+@app.route('/<int:id>/edit', methods=('GET', 'POST'))
+# example: .../420/edit - editing post with ID 420
+def edit(id):
+    post = get_post(id)
+
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+        # Get form data.
+
+        if not title:
+            flash('Title is required')
+        # Show error if title is missing.
+        else:
+            conn = get_db_connection()
+            conn.execute('UPDATE posts SET title = ?, content = ?'
+                ' WHERE id = ?',
+                (title, content, id)) 
+            # Update `posts` table for a record with matching ID
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index')) # Return to index.
+
+    return render_template('edit.html', post=post)
