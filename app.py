@@ -38,4 +38,20 @@ def post(post_id):
 # GET: Accepted by default.
 # For non-default methods: pass a tuple with GET & POST to `methods` of the @app.route() decorator.
 def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+    # This code will only execute if the request is POST.
+    # Get data from request.form object that can access form data in request.
+
+    if not title:
+        flash('Title is required')
+    # If title isn't entered, show error. Else: do the magic!
+    else:
+        conn = get_db_connection()
+        conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)', (title, content))
+        # Insert post title/content into DB.
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index')) # Return to index.
     return render_template('create.html')

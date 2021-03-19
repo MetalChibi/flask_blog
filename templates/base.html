@@ -22,11 +22,17 @@
             <li class="nav-item active">
                 <a class="nav-link" href="#">About</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('create')}}">New Post</a>
+            </li>
             </ul>
         </div>
     </nav>
     <!-- Content goes here I guess?? -->
     <div class="container">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
         {% block content %} {% endblock %}  <!-- Jinja content block; content from child templates inherited from base.html -->
     </div>
 
